@@ -76,6 +76,9 @@ func TestProfileBlockIsIdempotent(t *testing.T) {
 	if !strings.Contains(block, ".ps1") || strings.Contains(block, "GetTempFileName") {
 		t.Fatal("o PowerShell precisa gerar um script .ps1")
 	}
+	if !strings.Contains(block, "Test-Path $vnvjScript") {
+		t.Fatal("comandos informativos não podem exigir um script de sessão")
+	}
 }
 
 func TestPathWithoutManagedEntries(t *testing.T) {

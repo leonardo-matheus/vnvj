@@ -83,6 +83,13 @@ func runRuntime(kind runtimeKind, args []string, cfg *config) error {
 	if len(args) > 0 {
 		action = strings.ToLower(args[0])
 	}
+	if action == "help" || action == "--help" || action == "-h" {
+		if len(args) > 1 {
+			return errors.New("o comando help não recebe argumentos")
+		}
+		printRuntimeHelp(kind)
+		return nil
+	}
 	if action == "list" || action == "ls" {
 		if len(args) > 1 {
 			return errors.New("o comando list não recebe argumentos")
@@ -90,7 +97,7 @@ func runRuntime(kind runtimeKind, args []string, cfg *config) error {
 		return listInstallations(kind, *cfg)
 	}
 	if action != "use" && action != "default" {
-		return fmt.Errorf("comando desconhecido %q; use list, use ou default", action)
+		return fmt.Errorf("comando desconhecido %q; use %s help", action, commandName(kind))
 	}
 	if len(args) != 2 {
 		return fmt.Errorf("uso: %s %s <versão principal>", commandName(kind), action)
@@ -174,6 +181,7 @@ func listInstallations(kind runtimeKind, cfg config) error {
 		}
 		fmt.Printf("  %-12s %s%s\n", versionString(item.Version), item.Name, mark)
 	}
+	fmt.Printf("\nUse %s help para ver os comandos disponíveis.\n", commandName(kind))
 	return nil
 }
 
@@ -381,6 +389,24 @@ func atomicWrite(path string, data []byte, mode os.FileMode) error {
 		return err
 	}
 	return replaceFile(tempName, path)
+}
+
+func printRuntimeHelp(kind runtimeKind) {
+	command := commandName(kind)
+	label := "Node.js"
+	if kind == javaRuntime {
+		label = "Java"
+	}
+	fmt.Printf(`%s — gerenciador de versões do %s
+
+Comandos:
+  %s                 lista as versões instaladas
+  %s use <versão>    usa a versão nesta sessão
+  %s default <versão> define a versão padrão do usuário
+  %s help            mostra esta ajuda
+
+Informe apenas o número principal da versão, por exemplo: %s use 18.
+`, command, label, command, command, command, command, command)
 }
 
 func printHelp() {

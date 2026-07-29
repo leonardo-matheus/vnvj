@@ -63,6 +63,7 @@ Também é possível configurar sem perguntas:
 
 ```powershell
 vn                 # lista as versões instaladas
+vn help            # mostra os comandos disponíveis
 vn use 18          # usa a versão 18 nesta sessão
 vn default 22      # define a versão 22 como padrão
 ```
@@ -71,6 +72,7 @@ vn default 22      # define a versão 22 como padrão
 
 ```powershell
 vj                 # lista as versões instaladas
+vj help            # mostra os comandos disponíveis
 vj use 8           # usa Java 8 nesta sessão
 vj default 25      # define Java 25 como padrão
 ```

@@ -106,7 +106,7 @@ function global:Invoke-VnvjCommand {
         $env:VNVJ_SCRIPT = $vnvjScript
         & $vnvjExe $Runtime @RuntimeArgs
         $vnvjExit = $LASTEXITCODE
-        if ($vnvjExit -eq 0 -and (Get-Item $vnvjScript).Length -gt 0) { . $vnvjScript }
+        if ($vnvjExit -eq 0 -and (Test-Path $vnvjScript) -and (Get-Item $vnvjScript).Length -gt 0) { . $vnvjScript }
     } finally {
         Remove-Item Env:VNVJ_SHELL, Env:VNVJ_SCRIPT -ErrorAction SilentlyContinue
         Remove-Item $vnvjScript -ErrorAction SilentlyContinue
