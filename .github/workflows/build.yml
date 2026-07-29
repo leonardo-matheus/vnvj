@@ -1,0 +1,60 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-amd64:
+    name: Windows amd64
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Check formatting
+        shell: pwsh
+        run: |
+          $unformatted = gofmt -l .
+          if ($unformatted) {
+            Write-Error "Arquivos sem formatação:`n$unformatted"
+          }
+
+      - name: Test
+        run: go test ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          go build -buildvcs=false -trimpath -ldflags="-s -w" -o dist/vnvj.exe .
+
+      - name: Generate checksum
+        shell: pwsh
+        run: |
+          $hash = (Get-FileHash dist/vnvj.exe -Algorithm SHA256).Hash.ToLower()
+          "$hash  vnvj.exe" | Set-Content dist/SHA256SUMS.txt -Encoding ascii
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vnvj-windows-amd64
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14

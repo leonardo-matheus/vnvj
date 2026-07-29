@@ -48,7 +48,7 @@ func ensureInstalled(kind runtimeKind, root string, major int) (installation, er
 	if kind == javaRuntime {
 		label = "Java Temurin"
 	}
-	fmt.Printf("%s %d não está instalado. Instalar %s? [s/N]: ", label, major, remote.Version)
+	fmt.Printf("%s %d não está instalado. Instalar %s? [S/N]: ", label, major, remote.Version)
 	answer, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	if err != nil && !errors.Is(err, io.EOF) {
 		return installation{}, err
