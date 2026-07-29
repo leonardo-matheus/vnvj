@@ -1,6 +1,7 @@
 # vnvj
 
 [![Build](https://github.com/leonardo-matheus/vnvj/actions/workflows/build.yml/badge.svg)](https://github.com/leonardo-matheus/vnvj/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/leonardo-matheus/vnvj)](https://github.com/leonardo-matheus/vnvj/releases/latest)
 [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://go.dev/)
 [![Plataforma](https://img.shields.io/badge/Windows-amd64-0078D4?logo=windows)](https://www.microsoft.com/windows)
 
@@ -25,11 +26,11 @@ vj default 25
 
 ## Instalação
 
-### Usando o artefato do GitHub Actions
+### Usando uma Release
 
-1. Abra a execução mais recente do workflow [Build](https://github.com/leonardo-matheus/vnvj/actions/workflows/build.yml).
-2. Baixe o artefato `vnvj-windows-amd64`.
-3. Extraia o arquivo e execute:
+1. Abra a [Release mais recente](https://github.com/leonardo-matheus/vnvj/releases/latest).
+2. Baixe `vnvj.exe` e, opcionalmente, confira o hash em `SHA256SUMS.txt`.
+3. Execute:
 
 ```powershell
 .\vnvj.exe setup
